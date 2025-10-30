@@ -5,13 +5,33 @@ import db from '../../../db'
 // this file handles /api/auth/:action with any request method (GET, POST, etc)
 export default withIronSessionApiRoute(
   function handler(req, res) {
-    console.log(req.query.action)
-    const action = req.query.action
-    console.log(req.method)
-    const login = req.method
+    const {action} = req.method
+    //console.log(req.query.action)
+    //console.log(req.method)
+    
     // TODO: implement POST /api/auth/login
     // TODO: implement POST /api/auth/logout
     // TODO: implement POST /api/auth/signup
+    
+      switch (action) {
+      //POST /api/login
+      case "POST":
+        return res.status(200).json ({
+          method: req.method
+        })
+      
+      //POST/api/auth/logout
+      case "POST":
+        return res.status(200).json ({
+          method: req.method
+        })
+
+      //POST/api/auth/signup
+      case "POST":
+        return res.status(200).json ({
+          method: req.method
+        })
+    }
     return res.status(404).end()
   },
   sessionOptions
