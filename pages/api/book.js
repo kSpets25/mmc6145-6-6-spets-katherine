@@ -10,7 +10,49 @@ export default withIronSessionApiRoute(
     // TODO: Respond with 404 for all other requests
     // User info can be accessed with req.session
     // No user info on the session means the user is not logged in
+   
+    const { method } = req;
+    const user = req.session.user;
+
+    // Require login
+    if (!user) {
+      return res.status(401).json({ error: "Unauthorized: Please log in first." });
+    }
+
+    try {
+      if (method === "POST") {
+        // Add a book for this user
+        const { bookid } = req.body;
+        if (!bookid) {
+          return res.status(400).json({ error: "Missing bookid" });
+        }
+
+        const addedBook = await db.book.add(user.id, bookid);
+        return res
+          .status(200)
+          .json({ message: "Book added successfully", book: addedBook });
+      }
+
+      if (method === "DELETE") {
+        // Remove a book for this user
+        const { bookid } = req.body;
+        if (!bookid) {
+          return res.status(400).json({ error: "Missing bookid" });
+        }
+
+        const removedBook = await db.book.remove(user.id, bookid);
+        return res
+          .status(200)
+          .json({ message: "Book removed successfully", book: removedBook });
+      }
+
+    } catch (err) {
+      console.error("Error in /api/book:", err);
+      return res
+        .status(500)
+        .json({ error: "Internal server error", details: err.message });
+    }
     return res.status(404).end()
   },
   sessionOptions
-)
+);

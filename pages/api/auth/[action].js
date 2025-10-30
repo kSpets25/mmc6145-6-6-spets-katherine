@@ -5,7 +5,6 @@ import db from '../../../db'
 // this file handles /api/auth/:action with any request method (GET, POST, etc)
 export default withIronSessionApiRoute(
   function handler(req, res) {
-    //const {action} = req.method
     //console.log(req.query.action)
     //console.log(req.method)
     
