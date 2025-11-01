@@ -24,11 +24,12 @@ export default withIronSessionApiRoute(
         // Add a book for this user
         const { bookid } = req.body;
         if (!bookid) {
-          return res.status(400).json.destroy({ error: error.message });
+          return res.status(400).json({ error: "oh no" });
         }
-
+        if (!user) {
+          return res.status(401).json.destroy
+        } 
         const addedBook = await db.book.add(user.id, bookid);
-
         return res
           .status(200)
           .json({ message: "Book added successfully", book: addedBook });
