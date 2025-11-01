@@ -24,22 +24,23 @@ export default withIronSessionApiRoute(
         // Add a book for this user
         const { bookid } = req.body;
         if (!bookid) {
-          return res.status(400).json({ error: "Missing bookid" });
+          return res.status(400).json.destroy({ error: error.message });
         }
 
         const addedBook = await db.book.add(user.id, bookid);
+
         return res
           .status(200)
           .json({ message: "Book added successfully", book: addedBook });
       }
-
+      
       if (method === "DELETE") {
         // Remove a book for this user
         const { bookid } = req.body;
         if (!bookid) {
-          return res.status(400).json({ error: "Missing bookid" });
+          return res.status(400).json({ error: "oh no" });
+          
         }
-
         const removedBook = await db.book.remove(user.id, bookid);
         return res
           .status(200)
