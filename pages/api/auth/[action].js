@@ -18,7 +18,7 @@ export default withIronSessionApiRoute(
     if (method === "POST") {
       switch (action) {
         case "login":
-          return login(req, res) 
+          return login(req, res)
         case "logout":
           return logout(req, res);
         case "signup":

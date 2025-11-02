@@ -2,6 +2,7 @@ import { withIronSessionApiRoute } from "iron-session/next";
 import sessionOptions from "../../config/session"
 import db from '../../db'
 
+
 // this handler runs for /api/book with any request method (GET, POST, etc)
 export default withIronSessionApiRoute(
   async function handler(req, res) {
@@ -22,17 +23,15 @@ export default withIronSessionApiRoute(
     try {
       if (method === "POST") {
         // Add a book for this user
-        const { bookid } = req.body;
+       
+        const { bookid} = req.body;
         if (!bookid) {
           return res.status(400).json({ error: "oh no" });
         }
-        if (!user) {
-          return res.status(401).json.destroy
-        } 
+        
         const addedBook = await db.book.add(user.id, bookid);
-        return res
-          .status(200)
-          .json({ message: "Book added successfully", book: addedBook });
+        
+        return res.status(200).json({ message: "Book added successfully", book: addedBook });
       }
       
       if (method === "DELETE") {

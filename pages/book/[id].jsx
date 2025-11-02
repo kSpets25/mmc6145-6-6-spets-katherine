@@ -50,7 +50,26 @@ export default function Book(props) {
     // Be sure to pass book in body (use JSON.stringify)
     // Be sure to also include the content-type header as application/json
     // Call router.replace(router.asPath) if you receive a 200 status
+   try {
+    const response = await fetch('/api/book', {
+      method: 'POST',
+      header: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(book)
+    });
+    if (response.status === 200) {
+      router.replace(router.asPath);
+    } else (error); {
+      console.error ("failed to add book", response.status)
+    }
+    } catch (error) {
+      console.error('Error adding book', error);
+    }
   }
+    
+    
+  
   async function removeFromFavorites() {
     // TODO: use fetch to call DELETE /api/book
     // Be sure to pass {id: <book id>} in body (use JSON.stringify)
