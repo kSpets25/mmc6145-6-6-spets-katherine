@@ -70,16 +70,16 @@ export default function Book(props) {
     // Be sure to pass {id: <book id>} in body (use JSON.stringify)
     // Be sure to also include the content-type header as application/json
     // Call router.replace(router.asPath) if you receive a 200 status
-   const response = await fetch('/api/book', {
+   const response = await fetch('/api/book', {//delete request
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({id: bookId})
+    body: JSON.stringify({id: book.id})// id sent in body
    });
 
    if (response.status === 200) {
-    router.replace(router.asPath);
+    router.replace(router.asPath); //refresh current page when delete book
    } else {
     console.error('Failed to remove book', response.status);
    }
