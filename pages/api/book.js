@@ -24,24 +24,24 @@ export default withIronSessionApiRoute(
       if (method === "POST") {
         // Add a book for this user
        
-        const { bookid} = req.body;
-        if (!bookid) {
+        const { bookId} = req.body;
+        if (!bookId) {
           return res.status(400).json({ error: "oh no" });
         }
         
-        const addedBook = await db.book.add(user.id, bookid);
+        const addedBook = await db.book.add(user.id, bookId);
         
         return res.status(200).json({ message: "Book added successfully", book: addedBook });
       }
       
       if (method === "DELETE") {
         // Remove a book for this user
-        const { bookid } = req.body;
-        if (!bookid) {
+        const { bookId } = req.body;
+        if (!bookId) {
           return res.status(400).json({ error: "oh no" });
           
         }
-        const removedBook = await db.book.remove(user.id, bookid);
+        const removedBook = await db.book.remove(user.id, bookId);
         return res
           .status(200)
           .json({ message: "Book removed successfully", book: removedBook });
