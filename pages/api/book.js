@@ -14,23 +14,22 @@ export default withIronSessionApiRoute(
    
     const { method } = req;
     const user = req.session.user;
+    console.log("Session user:", req.session.user);
 
     // Require login
-    if (!user) {
-      return res.status(401).json({ error: "Unauthorized: Please log in first." });
-    }
-
-    try {
+      if (!user) {
+        return res.status(401).json({ error: "Unauthorized: Please log in first." });
+      }
+      
       if (method === "POST") {
         // Add a book for this user
-       
-        const { bookId} = req.body;
-        if (!bookId) {
+
+        const { book } = req.body;
+        if (!book) {
           return res.status(400).json({ error: "oh no" });
         }
         
-        const addedBook = await db.book.add(user.id, bookId);
-        
+        const addedBook = await db.book.add(user.id, book);
         return res.status(200).json({ message: "Book added successfully", book: addedBook });
       }
       
@@ -42,18 +41,9 @@ export default withIronSessionApiRoute(
           
         }
         const removedBook = await db.book.remove(user.id, bookId);
-        return res
-          .status(200)
-          .json({ message: "Book removed successfully", book: removedBook });
+        return res.status(200).json({ message: "Book removed successfully", book: removedBook });
       }
-
-    } catch (err) {
-      console.error("Error in /api/book:", err);
-      return res
-        .status(500)
-        .json({ error: "Internal server error", details: err.message });
-    }
     return res.status(404).end()
   },
   sessionOptions
-);
+  );
