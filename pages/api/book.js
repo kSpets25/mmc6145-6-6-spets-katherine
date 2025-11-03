@@ -33,7 +33,8 @@ export default withIronSessionApiRoute(
       
       if (method === "DELETE") {
         // Remove a book for this user
-        const bookId = req.body;
+        const book = req.body;
+        const bookId = book.id
         
         console.log('removed book', bookId)
         const removedBook = await db.book.remove(user.id, bookId);
