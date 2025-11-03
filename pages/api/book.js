@@ -18,7 +18,7 @@ export default withIronSessionApiRoute(
 
     // Require login
       if (!user) {
-        return res.status(401).json({ error: "Unauthorized: Please log in first." }); 
+        return res.status(401).json({ error: "Unrecognized: Please log in first." }); 
         
       }
      
@@ -28,7 +28,13 @@ export default withIronSessionApiRoute(
         console.log('Received book:', book);
 
         const addedBook = await db.book.add(user.id, book);
+        if (!addedBook) {
+          // Destroy session if user/book not found
+          req.session.destroy();
+          return res.status(401).json({ error: "Unauthorized: User not found or cannot add book." });
+        }
         return res.status(200).json({ message: "Book added successfully", book: addedBook });
+        
       }
       
       if (method === "DELETE") {
@@ -38,6 +44,11 @@ export default withIronSessionApiRoute(
         
         console.log('removed book', bookId)
         const removedBook = await db.book.remove(user.id, bookId);
+        if (!removedBook) {
+          // Destroy session if user/book not found
+          req.session.destroy();
+          return res.status(401).json({ error: "Unauthorized: User not found or cannot add book." });
+        }
         return res.status(200).json({ message: "Book removed successfully", bookId: removedBook }); 
       }
       
