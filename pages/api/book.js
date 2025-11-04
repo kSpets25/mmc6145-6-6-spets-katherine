@@ -15,7 +15,7 @@ export default withIronSessionApiRoute(
     const { method } = req;
     const user = req.session.user;
     console.log("Session user:", req.session.user);
-
+    
     // Require login
       if (!user) {
         return res.status(401).json({ error: "Unrecognized: Please log in first." }); 
@@ -24,6 +24,7 @@ export default withIronSessionApiRoute(
      
       if ( method === "POST") {
         // Add a book for this user
+
         const book  = req.body;
         console.log('Received book:', book);
 
@@ -31,10 +32,16 @@ export default withIronSessionApiRoute(
         if (!addedBook) {
           // Destroy session if user/book not found
           req.session.destroy();
+          
           return res.status(401).json({ error: "Unauthorized: User not found or cannot add book." });
+           // (error) => {
+          //  console.error("Book remove error:", error);
+           // return res.status(400).json({ error: error.message || "oh no" });
+          //}
         }
-        return res.status(200).json({ message: "Book added successfully", book: addedBook });
         
+          return res.status(200).json({ message: "Book added successfully", book: addedBook });
+         
       }
       
       if (method === "DELETE") {
@@ -50,7 +57,8 @@ export default withIronSessionApiRoute(
           return res.status(401).json({ error: "Unauthorized: User not found or cannot add book." });
         }
         return res.status(200).json({ message: "Book removed successfully", bookId: removedBook }); 
-      }
+       
+        }
       
       return res.status(404).end();
   },
