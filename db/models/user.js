@@ -17,7 +17,7 @@ const UserSchema = new Schema({
   favoriteBooks: [bookSchema]
 })
 
-// hashes the password before it's stored in mongo
+// hashes the password before it's stored in mongoDb
 UserSchema.pre('save', async function(next) {
   if (this.isNew)
     this.password = await bcrypt.hash(this.password, 10)
